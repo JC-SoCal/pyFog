@@ -9,7 +9,6 @@ class Fog:
 		self.br.set_cookiejar(self.cj)
 
 		self.br.set_handle_equiv(True)
-		#self.br.set_handle_gzip(True)
 		self.br.set_handle_redirect(True)
 		self.br.set_handle_referer(True)
 		self.br.set_handle_robots(False)
@@ -28,7 +27,6 @@ class Fog:
 		self.br.form['uname'] = user
 		self.br.form['upass'] = password
 
-		# Login
 		self.br.submit()  
 		if self.br.title().split()[0] == 'Dashboard':
 			return True, 'Success'
@@ -56,7 +54,6 @@ class Fog:
 
 			host_not_found = 1
 			for link in self.br.links():
-				#print link.text
 				if link.text == hostname:
 					self.br.follow_link(link)
 					host_not_found = 0
@@ -65,7 +62,6 @@ class Fog:
 				raise Exception('Hostname not found', hostname)
 
 			for link in self.br.links():
-				#print link.text
 				if link.text == 'Basic Tasks':
 					self.br.follow_link(link)
 
