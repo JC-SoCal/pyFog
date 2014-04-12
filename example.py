@@ -1,6 +1,6 @@
 import fog_api
 
-url = 'http://localhost/fog/management/index.php'
+url = 'http://192.168.2.15/fog/management/index.php'
 
 this = fog_api.Fog()
 
@@ -14,7 +14,7 @@ if not status:
 	print msg
 	exit()
 
-status, msg = this.deploy('Demo')
+status, msg = this.deploy('DirtyBox')
 if not status:
 	print msg
 	exit()

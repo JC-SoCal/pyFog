@@ -74,3 +74,40 @@ class Fog:
 			return True, 'Success'
 		except Exception as e:
 			return False, e
+
+	def wol(self, hostname):
+		try:
+			for link in self.br.links():
+				if link.url == "?node=host":
+					self.br.follow_link(link)
+
+			for link in self.br.links():
+				if link.text == 'List All Hosts':
+					self.br.follow_link(link)
+
+			host_not_found = 1
+			for link in self.br.links():
+				if link.text == hostname:
+					self.br.follow_link(link)
+					host_not_found = 0
+				
+			if host_not_found:
+				raise Exception('Hostname not found', hostname)
+
+			for link in self.br.links():
+				if link.text == 'Basic Tasks':
+					self.br.follow_link(link)
+
+			for link in self.br.links():
+				if link.text == '[IMG]Advanced':
+					self.br.follow_link(link)
+
+			for link in self.br.links():
+				if link.text == '[IMG]Wake Up':
+					self.br.follow_link(link)					
+
+			self.br.select_form(nr=0)
+			self.br.submit()
+			return True, 'Success'
+		except Exception as e:
+			return False, e		
