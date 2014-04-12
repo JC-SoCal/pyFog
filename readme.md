@@ -50,8 +50,9 @@ Arguments:
 
 * hostname -- string, valid hostname from the host managment console 
 
-**pyFog.wol(hostname)**:  
+**pyFog.wol(hostname, schedule)**:  
 &nbsp;&nbsp;&nbsp;&nbsp;Wake Up will attempt to send the Wake-On-LAN packet to the computer to turn the computer on. In switched environments, you typically need to configure your hardware to allow for this (iphelper).   
 Arguments:  
 
-* hostname -- string, valid hostname from the host managment console 
+* hostname -- string, valid hostname from the host managment console
+* schedule -- string, optional. FORMAT: 'YYYY/MM/DD HH:MM' example: '2014/08/17 15:25' If not set the task will execute immediately. 

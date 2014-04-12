@@ -12,20 +12,20 @@ if not status:
 	print msg
 	exit()
 
-status, msg = this.upload('ClientWin1')
+# status, msg = this.upload('ClientWin1')
+# if not status:
+# 	print msg
+# 	exit()
+
+status, msg = this.wol('DirtyBox','2014/08/17 15:25')
 if not status:
 	print msg
 	exit()
 
-status, msg = this.wol('ClientWin1')
-if not status:
-	print msg
-	exit()
-
-status, msg = this.deploy('ClientWin1')
-if not status:
-	print msg
-	exit()
+# status, msg = this.deploy('ClientWin1')
+# if not status:
+# 	print msg
+# 	exit()
 
 status, msg = this.logout()
 if not status:

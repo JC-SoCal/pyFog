@@ -142,7 +142,7 @@ class pyFog:
 		except Exception as e:
 			return False, e			
 
-	def wol(self, hostname):
+	def wol(self, hostname, schedule=''):
 		"Wake Up will attempt to send the Wake-On-LAN packet to the computer (hostname) to turn the computer on. In switched environments, you typically need to configure your hardware to allow for this (iphelper)."
 		try:
 			if not self.findAndFollowLink("?node=host"):
@@ -163,11 +163,16 @@ class pyFog:
 			if not self.findAndFollowLink('[IMG]Wake Up', 'text'):
 				raise Exception('Error navigating site')								
 
-			self.br.select_form(nr=0)
-			self.br.submit()
+			self.br.select_form(nr=0)	
+			if schedule:
+				self.br.find_control("singlesched").items[0].selected=True
+				self.br.form["singlescheddate"] = schedule
+
+			response = self.br.submit()
+			if "Failed to schedule task." in response.read():
+				raise Exception("Failed to schedule task. Datetime is either invalid or the task already exists.")
 
 			self.returnHome()
-
 			return True, 'Success'
 
 		except Exception as e:
