@@ -14,6 +14,26 @@ class Fog:
 		self.br.set_handle_robots(False)
 		self.br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
 
+	def returnHome(self):
+		for link in self.br.links():
+			if link.url == '?node=home':
+				self.br.follow_link(link)
+
+	def findAndFollowLink(self, arg, linktype='url'):
+		success = False
+		if linktype == 'url':
+			for link in self.br.links():
+					if link.url == arg:
+						self.br.follow_link(link)
+						success = True
+
+		elif linktype == 'text':
+			for link in self.br.links():
+					if link.text == arg:
+						self.br.follow_link(link)
+						success = True						
+		return success
+
 	def open(self, url):
 		try: 
 			self.br.open(url)
@@ -42,72 +62,95 @@ class Fog:
 		else:
 			return False, 'Could not logout'
 
-	def deploy(self, hostname):
+	def upload(self, hostname):
 		try:
-			for link in self.br.links():
-				if link.url == "?node=host":
-					self.br.follow_link(link)
+			if not self.findAndFollowLink("?node=host"):
+				raise Exception('Error navigating site')
 
-			for link in self.br.links():
-				if link.text == 'List All Hosts':
-					self.br.follow_link(link)
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
 
-			host_not_found = 1
-			for link in self.br.links():
-				if link.text == hostname:
-					self.br.follow_link(link)
-					host_not_found = 0
-				
-			if host_not_found:
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink(hostname, 'text'):
 				raise Exception('Hostname not found', hostname)
 
-			for link in self.br.links():
-				if link.text == 'Basic Tasks':
-					self.br.follow_link(link)
+			if not self.findAndFollowLink('Basic Tasks', 'text'):
+				raise Exception('Error navigating site')
 
-			for link in self.br.links():
-				if link.text == '[IMG]Deploy':
-					self.br.follow_link(link)
+			if not self.findAndFollowLink('[IMG]Upload', 'text'):
+				raise Exception('Error navigating site')			
 
 			self.br.select_form(nr=0)
 			self.br.submit()
+
+			self.returnHome()
+
 			return True, 'Success'
+
 		except Exception as e:
 			return False, e
 
-	def wol(self, hostname):
+	def deploy(self, hostname):
 		try:
-			for link in self.br.links():
-				if link.url == "?node=host":
-					self.br.follow_link(link)
+			if not self.findAndFollowLink("?node=host"):
+				raise Exception('Error navigating site')
 
-			for link in self.br.links():
-				if link.text == 'List All Hosts':
-					self.br.follow_link(link)
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
 
-			host_not_found = 1
-			for link in self.br.links():
-				if link.text == hostname:
-					self.br.follow_link(link)
-					host_not_found = 0
-				
-			if host_not_found:
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink(hostname, 'text'):
 				raise Exception('Hostname not found', hostname)
 
-			for link in self.br.links():
-				if link.text == 'Basic Tasks':
-					self.br.follow_link(link)
+			if not self.findAndFollowLink('Basic Tasks', 'text'):
+				raise Exception('Error navigating site')
 
-			for link in self.br.links():
-				if link.text == '[IMG]Advanced':
-					self.br.follow_link(link)
-
-			for link in self.br.links():
-				if link.text == '[IMG]Wake Up':
-					self.br.follow_link(link)					
+			if not self.findAndFollowLink('[IMG]Deploy', 'text'):
+				raise Exception('Error navigating site')			
 
 			self.br.select_form(nr=0)
 			self.br.submit()
+
+			self.returnHome()
+
 			return True, 'Success'
+
+		except Exception as e:
+			return False, e			
+
+	def wol(self, hostname):
+		try:
+			if not self.findAndFollowLink("?node=host"):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink(hostname, 'text'):
+				raise Exception('Hostname not found', hostname)
+
+			if not self.findAndFollowLink('Basic Tasks', 'text'):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink('[IMG]Advanced', 'text'):
+				raise Exception('Error navigating site')
+
+			if not self.findAndFollowLink('[IMG]Wake Up', 'text'):
+				raise Exception('Error navigating site')								
+
+			self.br.select_form(nr=0)
+			self.br.submit()
+
+			self.returnHome()
+
+			return True, 'Success'
+
 		except Exception as e:
 			return False, e		
