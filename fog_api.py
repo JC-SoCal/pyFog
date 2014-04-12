@@ -124,9 +124,6 @@ class Fog:
 			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
 				raise Exception('Error navigating site')
 
-			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
-				raise Exception('Error navigating site')
-
 			if not self.findAndFollowLink(hostname, 'text'):
 				raise Exception('Hostname not found', hostname)
 
