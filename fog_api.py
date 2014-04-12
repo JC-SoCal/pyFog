@@ -1,7 +1,27 @@
+#!/usr/bin/env python
+#
+# pyFog.py
+#
+# pyFog is a simple API which uses mechanize to complete tasks through the FOG web interface.
+# Copyright (C) 2014 John Carruthers, @JC_SoCal
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import mechanize
 import cookielib
 
-class Fog:
+class pyFog:
 	def __init__(self):
 
 		self.br = mechanize.Browser()
@@ -15,11 +35,13 @@ class Fog:
 		self.br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
 
 	def returnHome(self):
+		"Returns browser back to the home screen"
 		for link in self.br.links():
 			if link.url == '?node=home':
 				self.br.follow_link(link)
 
 	def findAndFollowLink(self, arg, linktype='url'):
+		"Searches the page for either the text or url pieces of a link and follows it"
 		success = False
 		if linktype == 'url':
 			for link in self.br.links():
@@ -35,6 +57,7 @@ class Fog:
 		return success
 
 	def open(self, url):
+		"Opens the webpage for the first time"
 		try: 
 			self.br.open(url)
 			return True, 'Success'
@@ -42,7 +65,7 @@ class Fog:
 			return False, e
 
 	def login(self, user, password):
-		#select the fog login form, and apply creds
+		"Logs into the fog webpage"
 		self.br.select_form(nr=0)
 		self.br.form['uname'] = user
 		self.br.form['upass'] = password
@@ -54,6 +77,7 @@ class Fog:
 			return False, 'Could not login'
 
 	def logout(self):
+		"Logs out of the fog webpage"
 		for link in self.br.links():
 			if link.url == "?node=logout":
 				self.br.follow_link(link)
@@ -63,6 +87,7 @@ class Fog:
 			return False, 'Could not logout'
 
 	def upload(self, hostname):
+		"Upload will pull an image from a client computer (hostname) that will be saved on the server."
 		try:
 			if not self.findAndFollowLink("?node=host"):
 				raise Exception('Error navigating site')
@@ -90,6 +115,7 @@ class Fog:
 			return False, e
 
 	def deploy(self, hostname):
+		"Deploy action will send an image saved on the FOG server to the client computer (hostname) with all included snapins. "
 		try:
 			if not self.findAndFollowLink("?node=host"):
 				raise Exception('Error navigating site')
@@ -117,6 +143,7 @@ class Fog:
 			return False, e			
 
 	def wol(self, hostname):
+		"Wake Up will attempt to send the Wake-On-LAN packet to the computer (hostname) to turn the computer on. In switched environments, you typically need to configure your hardware to allow for this (iphelper)."
 		try:
 			if not self.findAndFollowLink("?node=host"):
 				raise Exception('Error navigating site')

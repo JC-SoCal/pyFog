@@ -1,10 +1,8 @@
-import fog_api
+import pyFog
 
-url = 'http://192.168.2.15/fog/management/index.php'
+this = pyFog.pyFog()
 
-this = fog_api.Fog()
-
-status,msg = this.open(url)
+status,msg = this.open('http://192.168.2.15/fog/management/index.php')
 if not status:
 	print msg
 	exit()
@@ -14,7 +12,17 @@ if not status:
 	print msg
 	exit()
 
-status, msg = this.deploy('DirtyBox')
+status, msg = this.upload('ClientWin1')
+if not status:
+	print msg
+	exit()
+
+status, msg = this.wol('ClientWin1')
+if not status:
+	print msg
+	exit()
+
+status, msg = this.deploy('ClientWin1')
 if not status:
 	print msg
 	exit()
@@ -23,5 +31,3 @@ status, msg = this.logout()
 if not status:
 	print msg
 	exit()
-
-
