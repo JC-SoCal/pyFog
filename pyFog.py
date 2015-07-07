@@ -129,7 +129,7 @@ class pyFog:
 			if not self.findAndFollowLink('Basic Tasks', 'text'):
                 raise Exception('Error navigating site: did not find basic tasks button')
 
-			if not self.findAndFollowLink('[IMG]Deploy', 'text'):
+			if not self.findAndFollowLink('[IMG]Download', 'text'):
                 raise Exception('Error navigating site: did not find Download button')			
 
 			self.br.select_form(nr=0)
