@@ -90,19 +90,19 @@ class pyFog:
 		"Upload will pull an image from a client computer (hostname) that will be saved on the server."
 		try:
 			if not self.findAndFollowLink("?node=host"):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find host button')
 
 			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find host-list button')
 
 			if not self.findAndFollowLink(hostname, 'text'):
 				raise Exception('Hostname not found', hostname)
 
 			if not self.findAndFollowLink('Basic Tasks', 'text'):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find basic tasks button')
 
 			if not self.findAndFollowLink('[IMG]Upload', 'text'):
-				raise Exception('Error navigating site')			
+                raise Exception('Error navigating site: did not find upload button')			
 
 			self.br.select_form(nr=0)
 			self.br.submit()
@@ -118,19 +118,19 @@ class pyFog:
 		"Deploy action will send an image saved on the FOG server to the client computer (hostname) with all included snapins. "
 		try:
 			if not self.findAndFollowLink("?node=host"):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find host button')
 
 			if not self.findAndFollowLink("/fog/management/index.php?node=host&sub=list"):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find host list button')
 
 			if not self.findAndFollowLink(hostname, 'text'):
 				raise Exception('Hostname not found', hostname)
 
 			if not self.findAndFollowLink('Basic Tasks', 'text'):
-				raise Exception('Error navigating site')
+                raise Exception('Error navigating site: did not find basic tasks button')
 
 			if not self.findAndFollowLink('[IMG]Deploy', 'text'):
-				raise Exception('Error navigating site')			
+                raise Exception('Error navigating site: did not find Download button')			
 
 			self.br.select_form(nr=0)
 			self.br.submit()
